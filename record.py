@@ -3,7 +3,7 @@ import soundfile as sf
 from gtts import gTTS
 import audio2numpy as a2n
 
-duration = 2
+duration = 5
 fs = 44100
 ch = 2
 
