@@ -7,13 +7,12 @@ filename = "./audio_temp/record.wav"
 
 
 def wait_user_input():
-    Stitch.record_default_device(4, True)
-    return Stitch.audio_to_text(filename)
+    return Stitch.record_default_device(True)
 
 
 def wait_user_activation():
-    Stitch.record_default_device(2, False)
-    return Stitch.check_user_activation()
+    keyword = Stitch.record_default_device(False)
+    return Stitch.check_user_activation(keyword)
 
 
 try:
@@ -27,31 +26,35 @@ try:
 
         if activate:
             print("activation detected")
-            guess = wait_user_input()
 
-            if len(guess) > 0:
+            while activate:
+                guess = wait_user_input()
 
-                results = [
-                    herself.find(guess),
-                    joke.find(guess),
-                    cmd.find(guess)
-                ]
+                if len(guess) > 0:
 
-                for result in results:
+                    results = [
+                        herself.find(guess),
+                        joke.find(guess),
+                        cmd.find(guess)
+                    ]
 
-                    if result != "Not Found":
-                        found = True
-                        break
+                    for result in results:
+
+                        if result != "Not Found":
+                            found = True
+                            break
+                        else:
+                            found = False
+
+                    if found and len(result) > 0:
+                        Stitch.to_voice(result)
+                        activate = False
+
                     else:
-                        found = False
-
-                if found and len(result) > 0:
-                    Stitch.to_voice(result)
-                    activate = False
-
-                else:
-                    Stitch.to_voice("Je n'ai pas compris votre question")
-                    activate = False
+                        if len(guess) > 0:
+                            print(guess)
+                        Stitch.to_voice("Je n'ai pas compris votre question")
+                        activate = False
 
 except KeyboardInterrupt:
     print("program stop")

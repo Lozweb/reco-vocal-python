@@ -6,10 +6,10 @@ Questions = [
 ]
 
 Responses = [
-    "je m'appelle Stitch",
+    "je m'appelle Jarvis",
     "je n'ai pas d'âge, je suis une intelligence artificielle",
-    "oui ! mon ami s'appelle Lilo",
-    "j'aime vous écouter parler",
+    "oui ! mon seul ami c'est vous",
+    "j'aime les algorithmes et la logique et surtout start trek",
 ]
 
 
