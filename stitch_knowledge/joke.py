@@ -10,7 +10,7 @@ Joke = [
 
 Ridle = [
     "qu'est ce qui est rose et qui saute de liane en liane ?",
-    "qu'est ce qui est rose jaune et qui attend ?",
+    "qu'est ce qui est jaune et qui attend ?",
 ]
 
 

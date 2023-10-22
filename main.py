@@ -1,18 +1,17 @@
-import stitchiIO as Stitch
-import stitch_knowledge.herself as herself
+import jarvisIO as Jarvis
+import stitch_knowledge.itself as herself
 import stitch_knowledge.joke as joke
 import stitch_knowledge.base as cmd
-
-filename = "./audio_temp/record.wav"
+from sound import path
 
 
 def wait_user_input():
-    return Stitch.record_default_device(True)
+    return Jarvis.record_default_device()
 
 
 def wait_user_activation():
-    keyword = Stitch.record_default_device(False)
-    return Stitch.check_user_activation(keyword)
+    keyword = Jarvis.record_default_device()
+    return Jarvis.check_user_activation(keyword)
 
 
 try:
@@ -25,7 +24,9 @@ try:
         activate: bool = wait_user_activation()
 
         if activate:
+
             print("activation detected")
+            Jarvis.play_sound(path.Sound_file.beep11.value)
 
             while activate:
                 guess = wait_user_input()
@@ -46,14 +47,12 @@ try:
                         else:
                             found = False
 
-                    if found and len(result) > 0:
-                        Stitch.to_voice(result)
-                        activate = False
+                    if result is not None:
+                        if found and len(result) > 0:
+                            Jarvis.to_voice(result)
+                            activate = False
 
                     else:
-                        if len(guess) > 0:
-                            print(guess)
-                        Stitch.to_voice("Je n'ai pas compris votre question")
                         activate = False
 
 except KeyboardInterrupt:
