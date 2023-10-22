@@ -3,14 +3,12 @@ import audio2numpy as a2n
 import speech_recognition as sr
 from gtts import gTTS
 
-r = sr.Recognizer()
 fs = 44100
 response_file: str = "./audio_temp/response.mp3"
 record_file: str = "./audio_temp/record.wav"
 activate_beep: str = "./sound/computerbeep_11.mp3"
 keyword_activation: str = "ordinateur"
 lang: str = "fr-FR"
-short_lang: str = "fr"
 
 
 def record_default_device():
@@ -20,24 +18,28 @@ def record_default_device():
 
 
 def capture_voice_input():
+    r = sr.Recognizer()
     with sr.Microphone() as source:
         audio = r.listen(source)
+
     return audio
 
 
-def to_voice(response):
-    textspeech = gTTS(text=response, lang=short_lang)
+def to_voice(response: str, language: str = 'fr'):
+    textspeech = gTTS(text=response, lang=language)
     textspeech.save(response_file)
     x, srarray = a2n.audio_from_file(response_file)
     print(keyword_activation + " : " + response)
-    sounddevice.play(x, samplerate=fs / 1.5)
+    sounddevice.play(x, samplerate=fs / 1.7)
     sounddevice.wait()
 
 
 def audio_to_text(audio):
     try:
+        r = sr.Recognizer()
+        # TODO : api key google to add recognize_google key paramater
         result = r.recognize_google(audio, language=lang)
-        print("Vous : ", format(result))
+        print("Vous : " + "'" + result + "'")
         return result
 
     except sr.UnknownValueError:

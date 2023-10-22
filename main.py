@@ -2,7 +2,7 @@ import jarvisIO as Jarvis
 import stitch_knowledge.itself as herself
 import stitch_knowledge.joke as joke
 import stitch_knowledge.base as cmd
-from sound import path
+from sound import beep
 
 
 def wait_user_input():
@@ -18,6 +18,8 @@ try:
 
     while True:
 
+        Jarvis.play_sound(beep.Sound_file.workbeep.value)
+
         guess: str
         result: str = ""
         found: bool = False
@@ -26,7 +28,7 @@ try:
         if activate:
 
             print("activation detected")
-            Jarvis.play_sound(path.Sound_file.beep11.value)
+            Jarvis.play_sound(beep.Sound_file.beep11.value)
 
             while activate:
                 guess = wait_user_input()
@@ -50,6 +52,11 @@ try:
                     if result is not None:
                         if found and len(result) > 0:
                             Jarvis.to_voice(result)
+                            activate = False
+
+                        else:
+                            Jarvis.play_sound(beep.Sound_file.alert13.value)
+                            Jarvis.to_voice("Je ne comprends pas la question")
                             activate = False
 
                     else:
