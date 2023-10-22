@@ -1,51 +1,57 @@
-import record
-import voice_to_text
+import stitchiIO as Stitch
+import stitch_knowledge.herself as herself
+import stitch_knowledge.joke as joke
+import stitch_knowledge.base as cmd
 
-filename = "record.wav"
-text: str
-
-
-def main():
-    data = record.record_default_device()
-    record.write_to_file(data, filename)
-    return voice_to_text.translate(filename)
+filename = "./audio_temp/record.wav"
 
 
-text = main()
+def wait_user_input():
+    Stitch.record_default_device(4, True)
+    return Stitch.audio_to_text(filename)
 
-if text == "comment tu t'appelles":
-    print("je m'appelle Stitch")
-    record.to_voice("je m'appelle Stitch")
 
-elif text == "quel âge as-tu":
-    print("je n'ai pas d'âge, je suis une intelligence artificielle")
-    record.to_voice("je n'ai pas d'âge, je suis une intelligence artificielle")
+def wait_user_activation():
+    Stitch.record_default_device(2, False)
+    return Stitch.check_user_activation()
 
-elif text == "as-tu des amis":
-    print("oui ! mon ami s'appelle Lilo")
-    record.to_voice("oui ! mon ami s'appelle Lilo")
 
-elif text == "qu'est-ce que tu aimes faire":
-    print("j'aime vous écouter parler")
-    record.to_voice("j'aime vous écouter parler")
+try:
 
-elif text == "raconte-nous une blague":
-    print("c'est l'histoire de paf le chien, il traverse la route, une voiture arrive et PAF le chien")
-    record.to_voice("c'est l'histoire de paf le chien, il traverse la route, une voiture arrive et PAF le chien")
+    while True:
 
-elif text == "fais-nous une devinette":
+        guess: str
+        result: str = ""
+        found: bool = False
+        activate: bool = wait_user_activation()
 
-    print("qu'est ce qui est rose et qui saute de liane en liane ?")
-    record.to_voice("qu'est ce qui est rose et qui saute de liane en liane ?")
-    text = main()
+        if activate:
+            print("activation detected")
+            guess = wait_user_input()
 
-    if text == "un malabar collé au cul de Tarzan":
-        print("c'est bien ça oui")
-        record.to_voice("c'est bien ça oui")
-    else:
-        print("un Malabar collé au cul de Tarzan")
-        record.to_voice("un Malabar collé au cul de Tarzan")
+            if len(guess) > 0:
 
-else:
-    print("Hum ... Je ne sais pas")
-    record.to_voice("Hum ... Je ne sais pas")
+                results = [
+                    herself.find(guess),
+                    joke.find(guess),
+                    cmd.find(guess)
+                ]
+
+                for result in results:
+
+                    if result != "Not Found":
+                        found = True
+                        break
+                    else:
+                        found = False
+
+                if found and len(result) > 0:
+                    Stitch.to_voice(result)
+                    activate = False
+
+                else:
+                    Stitch.to_voice("Je n'ai pas compris votre question")
+                    activate = False
+
+except KeyboardInterrupt:
+    print("program stop")
