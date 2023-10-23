@@ -16,9 +16,9 @@ def wait_user_activation():
 
 try:
 
-    while True:
+    Jarvis.play_sound(beep.Sound_file.workbeep.value)
 
-        Jarvis.play_sound(beep.Sound_file.workbeep.value)
+    while True:
 
         guess: str
         result: str = ""
