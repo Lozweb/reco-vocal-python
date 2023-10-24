@@ -1,7 +1,8 @@
 import jarvisIO as Jarvis
-import stitch_knowledge.itself as herself
-import stitch_knowledge.joke as joke
-import stitch_knowledge.base as cmd
+import knowledge.itself as herself
+import knowledge.joke as joke
+import knowledge.base as cmd
+import knowledge.envConfig as config
 from sound import beep
 
 
@@ -38,7 +39,9 @@ try:
                     results = [
                         herself.find(guess),
                         joke.find(guess),
-                        cmd.find(guess)
+                        cmd.find(guess),
+                        config.find(guess)
+
                     ]
 
                     for result in results:
