@@ -1,6 +1,8 @@
 import jarvisIO as Jarvis
 import database.manager as db
 from sound import beep
+from knowledge.base import find
+import os
 
 db.install()
 
@@ -19,36 +21,44 @@ try:
     Jarvis.play_sound(beep.SoundFile.workbeep.value)
 
     while True:
-
         guess: str
         result: str = ""
         activate: bool = wait_user_activation()
 
         if activate:
-
             print("activation detected")
             Jarvis.play_sound(beep.SoundFile.beep11.value)
 
             while activate:
                 guess = wait_user_input()
+                activate = False
+
+                base_cmd = find(str(guess))
+                if base_cmd == "executed":
+                    break
 
                 if len(guess) > 0:
-
                     response_uuid = db.search_question(str(guess))
 
                     if response_uuid is not None:
 
-                        response = db.search_response(response_uuid[0])
-                        Jarvis.to_voice(response[1])
+                        if response_uuid[0] != "Not Found":
 
+                            response = db.search_response(response_uuid[0])
+
+                            if response[0] != "Not Found":
+                                Jarvis.to_voice(response[1])
+                                if len(response[3]) > 0:
+                                    os.system(str(response[3]))
+
+                            else:
+                                Jarvis.to_voice("Une erreur s'est produite")
+                        else:
+                            Jarvis.to_voice("Je ne sais pas")
                     else:
-                        Jarvis.to_voice("Je n'ai pas trouvé de correspondance")
-                        activate = False
-
+                        Jarvis.to_voice("Une erreur s'est produite pendant la recherche")
                 else:
                     Jarvis.to_voice("Je n'ai pas compris la question")
-                    activate = False
-
 
 except KeyboardInterrupt:
     print("program stop")

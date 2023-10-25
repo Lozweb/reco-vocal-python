@@ -63,7 +63,13 @@ def search_question(guess: str):
     try:
         c.execute("SELECT responseUUID FROM Question WHERE guess=?", (guess,))
         rows = c.fetchall()
-        return rows[0]
+
+        if len(rows) == 1:
+            return rows[0]
+        elif len(rows) == 0:
+            return ("Not Found",)
+        else:
+            return ("Multiple résultat trouvés",)
 
     except Error as e:
         print("Search Question error : ", e)
@@ -79,7 +85,13 @@ def search_response(uid: str):
     try:
         c.execute("SELECT * FROM Response WHERE UUID=?", (uid,))
         rows = c.fetchall()
-        return rows[0]
+
+        if len(rows) == 1:
+            return rows[0]
+        elif len(rows) == 0:
+            return ("Not Found",)
+        else:
+            return ("Erreur, plusieurs réponse possible alors que l'uuid doit être unique en base",)
 
     except Error as e:
         print("Search Response error", e)
