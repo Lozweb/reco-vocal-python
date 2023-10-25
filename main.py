@@ -1,8 +1,9 @@
+import os
 import jarvisIO as Jarvis
 import database.manager as db
 from sound import beep
 from knowledge.base import find
-import os
+
 
 db.install()
 

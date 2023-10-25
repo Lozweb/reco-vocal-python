@@ -1,5 +1,4 @@
 import os
-import sys
 import sounddevice
 import audio2numpy as a2n
 import speech_recognition as sr
