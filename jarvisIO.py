@@ -1,3 +1,5 @@
+import os
+import sys
 import sounddevice
 import audio2numpy as a2n
 import speech_recognition as sr
@@ -26,8 +28,10 @@ def capture_voice_input():
 
 
 def to_voice(response: str, language: str = 'fr'):
+    if not os.path.exists(os.path.join(os.path.dirname(__file__), "audio_temp")):
+        os.makedirs("audio_temp")
+
     textspeech = gTTS(text=response, lang=language)
-    # TODO mkdir if not exist
     textspeech.save(response_file)
     x, srarray = a2n.audio_from_file(response_file)
     print(keyword_activation + " : " + response)
@@ -38,7 +42,6 @@ def to_voice(response: str, language: str = 'fr'):
 def audio_to_text(audio):
     try:
         r = sr.Recognizer()
-        # TODO : api key google to add recognize_google key paramater
         result = r.recognize_google(audio, language=lang)
         print("Vous : " + "'" + result + "'")
         return result
