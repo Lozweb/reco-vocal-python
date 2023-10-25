@@ -23,11 +23,11 @@ try:
 
         guess: str
         result: str = ""
-        found: bool = False
         activate: bool = wait_user_activation()
 
         if activate:
 
+            found: bool = False
             print("activation detected")
             Jarvis.play_sound(beep.Sound_file.beep11.value)
 
@@ -55,14 +55,18 @@ try:
                     if result is not None:
                         if found and len(result) > 0:
                             Jarvis.to_voice(result)
+                            print("désactivation")
                             activate = False
 
                         else:
                             Jarvis.play_sound(beep.Sound_file.alert13.value)
                             Jarvis.to_voice("Je ne comprends pas la question")
+                            print("désactivation")
                             activate = False
 
                     else:
+                        Jarvis.to_voice("je ne comprends pas la question")
+                        print("désactivation")
                         activate = False
 
 except KeyboardInterrupt:

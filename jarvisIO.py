@@ -27,6 +27,7 @@ def capture_voice_input():
 
 def to_voice(response: str, language: str = 'fr'):
     textspeech = gTTS(text=response, lang=language)
+    # TODO mkdir if not exist
     textspeech.save(response_file)
     x, srarray = a2n.audio_from_file(response_file)
     print(keyword_activation + " : " + response)
