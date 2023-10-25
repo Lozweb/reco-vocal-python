@@ -1,9 +1,12 @@
 import jarvisIO as Jarvis
+import database.manager as db
 import knowledge.itself as herself
 import knowledge.joke as joke
 import knowledge.base as cmd
 import knowledge.envConfig as config
 from sound import beep
+
+db.install()
 
 
 def wait_user_input():
@@ -17,7 +20,7 @@ def wait_user_activation():
 
 try:
 
-    Jarvis.play_sound(beep.Sound_file.workbeep.value)
+    Jarvis.play_sound(beep.SoundFile.workbeep.value)
 
     while True:
 
@@ -29,7 +32,7 @@ try:
 
             found: bool = False
             print("activation detected")
-            Jarvis.play_sound(beep.Sound_file.beep11.value)
+            Jarvis.play_sound(beep.SoundFile.beep11.value)
 
             while activate:
                 guess = wait_user_input()
@@ -41,7 +44,6 @@ try:
                         joke.find(guess),
                         cmd.find(guess),
                         config.find(guess)
-
                     ]
 
                     for result in results:
@@ -59,13 +61,12 @@ try:
                             activate = False
 
                         else:
-                            Jarvis.play_sound(beep.Sound_file.alert13.value)
+                            Jarvis.play_sound(beep.SoundFile.alert13.value)
                             Jarvis.to_voice("Je ne comprends pas la question")
                             print("désactivation")
                             activate = False
 
                     else:
-                        Jarvis.to_voice("je ne comprends pas la question")
                         print("désactivation")
                         activate = False
 
