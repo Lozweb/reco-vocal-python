@@ -1,9 +1,5 @@
 import jarvisIO as Jarvis
 import database.manager as db
-import knowledge.itself as herself
-import knowledge.joke as joke
-import knowledge.base as cmd
-import knowledge.envConfig as config
 from sound import beep
 
 db.install()
@@ -30,7 +26,6 @@ try:
 
         if activate:
 
-            found: bool = False
             print("activation detected")
             Jarvis.play_sound(beep.SoundFile.beep11.value)
 
@@ -39,36 +34,21 @@ try:
 
                 if len(guess) > 0:
 
-                    results = [
-                        herself.find(guess),
-                        joke.find(guess),
-                        cmd.find(guess),
-                        config.find(guess)
-                    ]
+                    response_uuid = db.search_question(str(guess))
 
-                    for result in results:
+                    if response_uuid is not None:
 
-                        if result != "Not Found":
-                            found = True
-                            break
-                        else:
-                            found = False
-
-                    if result is not None:
-                        if found and len(result) > 0:
-                            Jarvis.to_voice(result)
-                            print("désactivation")
-                            activate = False
-
-                        else:
-                            Jarvis.play_sound(beep.SoundFile.alert13.value)
-                            Jarvis.to_voice("Je ne comprends pas la question")
-                            print("désactivation")
-                            activate = False
+                        response = db.search_response(response_uuid[0])
+                        Jarvis.to_voice(response[1])
 
                     else:
-                        print("désactivation")
+                        Jarvis.to_voice("Je n'ai pas trouvé de correspondance")
                         activate = False
+
+                else:
+                    Jarvis.to_voice("Je n'ai pas compris la question")
+                    activate = False
+
 
 except KeyboardInterrupt:
     print("program stop")

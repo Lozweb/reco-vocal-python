@@ -40,7 +40,6 @@ def give_error(error: str):
 
 
 def add_skill():
-
     to_voice("Énoncez la question")
     play_sound(beep.SoundFile.beep11.value)
     qs = record_default_device()
