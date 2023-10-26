@@ -1,3 +1,4 @@
 /audio_temp/*
 pyvenv.cfg
 /.venv
+/model/*

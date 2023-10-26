@@ -3,3 +3,5 @@ audio2numpy>=0.1.2
 SpeechRecognition>=3.10.0
 gTTS>=2.4.0
 PyAudio>=0.2.13
+vosk>=0.3.45
+pyttsx3>=2.90

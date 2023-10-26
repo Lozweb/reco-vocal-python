@@ -3,10 +3,10 @@ import sounddevice
 import audio2numpy as a2n
 import speech_recognition as sr
 from gtts import gTTS
+import json
 
 fs = 44100
 response_file: str = "./audio_temp/response.mp3"
-record_file: str = "./audio_temp/record.wav"
 activate_beep: str = "./sound/computerbeep_11.mp3"
 keyword_activation: str = "ordinateur"
 lang: str = "fr-FR"
@@ -53,7 +53,6 @@ def audio_to_text(audio):
 
 
 def check_user_activation(result):
-
     if result == keyword_activation:
         return True
     else:
@@ -64,3 +63,21 @@ def play_sound(path: str):
     x, srarray = a2n.audio_from_file(path)
     sounddevice.play(x, samplerate=fs)
     sounddevice.wait()
+
+
+def voice_to_text(data):
+
+    data_result = data.Result()
+    result_dict = json.loads(data_result)
+
+    if not result_dict.get("text", "") == "":
+        return result_dict.get("text", "")
+
+    else:
+        return "..."
+
+
+def text_to_voice(engine, text):
+    engine.say(text)
+    engine.runAndWait()
+    engine.stop()
