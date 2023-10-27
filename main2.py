@@ -12,13 +12,13 @@ import os
 
 device_info = sd.query_devices(sd.default.device[0], 'input')
 samplerate = int(device_info['default_samplerate'])
-model = Model("model/small")
+model = Model("model/vosk-model-fr-0.22/")
 recognizer = KaldiRecognizer(model, samplerate)
 recognizer.SetWords(False)
 q = queue.Queue()
 
 engine = pyttsx3.init()
-engine.setProperty("rate", 145)
+engine.setProperty("rate", 135)
 engine.setProperty("voice", "french")
 
 db.install()

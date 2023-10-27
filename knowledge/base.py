@@ -97,6 +97,7 @@ def add_skill():
             break
 
         elif guess == "non":
+            cmd = ""
             break
 
         else:
